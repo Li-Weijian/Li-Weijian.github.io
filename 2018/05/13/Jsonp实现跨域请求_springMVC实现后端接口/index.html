@@ -79,18 +79,21 @@
 
 
 
-<meta name="description" content="同源策略了解跨域之前，首先了解一下“同源策略”。同源指的是：域名、端口、协议相同。这是浏览器出于安全考虑，当前域中不可以访问其他域的东西。 在同源策略下，浏览器是不可以访问该服务器以外的数据的，但是在JavaScript中，标签可以访问位于不同服务器中的文件，也就是说，它可以进行跨域请求。因此，我们所说的jsonp就是利用标签实现跨域请求。 JsonpJSONP 是 JSON with paddi">
+<meta name="description" content="同源策略了解跨域之前，首先了解一下“同源策略”。同源指的是：域名、端口、协议相同。这是浏览器出于安全考虑，当前域中不可以访问其他域的东西。 在同源策略下，浏览器是不可以访问该服务器以外的数据的，但是在JavaScript中,&amp;lt;script&amp;gt;标签可以访问位于不同服务器中的文件，也就是说，它可以进行跨域请求。因此，我们所说的jsonp就是利用&amp;lt;script&amp;gt;标签实现跨域请求。">
 <meta name="keywords" content="jsonp">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Jsonp实现跨域请求_springMVC实现后端接口">
 <meta property="og:url" content="http://yoursite.com/2018/05/13/Jsonp实现跨域请求_springMVC实现后端接口/index.html">
 <meta property="og:site_name" content="liweijian&#39;s blog">
-<meta property="og:description" content="同源策略了解跨域之前，首先了解一下“同源策略”。同源指的是：域名、端口、协议相同。这是浏览器出于安全考虑，当前域中不可以访问其他域的东西。 在同源策略下，浏览器是不可以访问该服务器以外的数据的，但是在JavaScript中，标签可以访问位于不同服务器中的文件，也就是说，它可以进行跨域请求。因此，我们所说的jsonp就是利用标签实现跨域请求。 JsonpJSONP 是 JSON with paddi">
+<meta property="og:description" content="同源策略了解跨域之前，首先了解一下“同源策略”。同源指的是：域名、端口、协议相同。这是浏览器出于安全考虑，当前域中不可以访问其他域的东西。 在同源策略下，浏览器是不可以访问该服务器以外的数据的，但是在JavaScript中,&amp;lt;script&amp;gt;标签可以访问位于不同服务器中的文件，也就是说，它可以进行跨域请求。因此，我们所说的jsonp就是利用&amp;lt;script&amp;gt;标签实现跨域请求。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-20T12:43:14.050Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/Li-Weijian/MarkdownPhoto/master/jsonp.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Li-Weijian/MarkdownPhoto/master/jsonp2.png">
+<meta property="og:updated_time" content="2018-05-20T12:49:05.067Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Jsonp实现跨域请求_springMVC实现后端接口">
-<meta name="twitter:description" content="同源策略了解跨域之前，首先了解一下“同源策略”。同源指的是：域名、端口、协议相同。这是浏览器出于安全考虑，当前域中不可以访问其他域的东西。 在同源策略下，浏览器是不可以访问该服务器以外的数据的，但是在JavaScript中，标签可以访问位于不同服务器中的文件，也就是说，它可以进行跨域请求。因此，我们所说的jsonp就是利用标签实现跨域请求。 JsonpJSONP 是 JSON with paddi">
+<meta name="twitter:description" content="同源策略了解跨域之前，首先了解一下“同源策略”。同源指的是：域名、端口、协议相同。这是浏览器出于安全考虑，当前域中不可以访问其他域的东西。 在同源策略下，浏览器是不可以访问该服务器以外的数据的，但是在JavaScript中,&amp;lt;script&amp;gt;标签可以访问位于不同服务器中的文件，也就是说，它可以进行跨域请求。因此，我们所说的jsonp就是利用&amp;lt;script&amp;gt;标签实现跨域请求。">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Li-Weijian/MarkdownPhoto/master/jsonp.png">
 
 
 
@@ -353,8 +356,8 @@
 
       
         <h3 id="同源策略"><a href="#同源策略" class="headerlink" title="同源策略"></a>同源策略</h3><p>了解跨域之前，首先了解一下“同源策略”。<br>同源指的是：域名、端口、协议相同。这是浏览器出于安全考虑，当前域中不可以访问其他域的东西。</p>
-<p>在同源策略下，浏览器是不可以访问该服务器以外的数据的，但是在JavaScript中，<script>标签可以访问位于不同服务器中的文件，也就是说，它可以进行跨域请求。因此，我们所说的jsonp就是利用<script>标签实现跨域请求。</p>
-<h3 id="Jsonp"><a href="#Jsonp" class="headerlink" title="Jsonp"></a>Jsonp</h3><p>JSONP 是 JSON with padding（填充式 JSON 或参数式 JSON）的简写。<br>jsonp其实很简单，就是动态创建<script>标签，利用其不受同源策略限制的优势进行跨域请求。</p>
+<p>在同源策略下，浏览器是不可以访问该服务器以外的数据的，但是在JavaScript中,&lt;script&gt;标签可以访问位于不同服务器中的文件，也就是说，它可以进行跨域请求。因此，我们所说的jsonp就是利用&lt;script&gt;标签实现跨域请求。</p>
+<h3 id="Jsonp"><a href="#Jsonp" class="headerlink" title="Jsonp"></a>Jsonp</h3><p>JSONP 是 JSON with padding（填充式 JSON 或参数式 JSON）的简写。<br>jsonp其实很简单，就是动态创建&lt;script&gt;标签，利用其不受同源策略限制的优势进行跨域请求。</p>
 <p><strong>此处我们使用Jquery进行请求，使用SpringMVC进行服务器端Controller层的代码编写。</strong><br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$.ajax(&#123;</span><br><span class="line">            //根据cookie向服务器查询用户</span><br><span class="line">            url : "http://localhost:8089/user/token/</span><br><span class="line">            dataType : "jsonp",     //此处要设置为jsonp</span><br><span class="line">            type : "POST",</span><br><span class="line">            data : &#123;user:3a88cc4d-16a6-41a6-9079-f749ca8ab809&#125;  //请求参数</span><br><span class="line">            jsonpCallback: 'handleResponse', //设置回调函数名</span><br><span class="line">            success : function(data)&#123;</span><br><span class="line">                if(data.status == 200)&#123;</span><br><span class="line">                    //do something</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure></p>
 <p>在上面的代码中，必须将dataType设置为jsonp才可以接收返回的数据。</p>
 <p>后端端代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(value = <span class="string">"/user/token"</span>)</span><br><span class="line"><span class="meta">@ResponseBody</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">getUserByToken</span><span class="params">(String user,String callback)</span></span>&#123;</span><br><span class="line">    Result Result = tokenService.getUserByToken(user);</span><br><span class="line">    <span class="comment">//判断是否为jsonp请求，如果callback不为空，则是jsonp请求</span></span><br><span class="line">    <span class="keyword">if</span> (StringUtils.isNotBlank(callback))&#123;</span><br><span class="line">        <span class="comment">//spring内置的类 -- spring4.1之后才可以使用此类</span></span><br><span class="line">        MappingJacksonValue mappingJacksonValue = <span class="keyword">new</span> MappingJacksonValue(e3Result);</span><br><span class="line">        <span class="comment">//设置回调函数名</span></span><br><span class="line">        mappingJacksonValue.setJsonpFunction(callback);</span><br><span class="line">        <span class="comment">//返回结果</span></span><br><span class="line">        <span class="keyword">return</span> mappingJacksonValue;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//不是jsonp请求，正常返回json数据</span></span><br><span class="line">    <span class="keyword">return</span> Result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
@@ -363,7 +366,7 @@
 <p>服务器响应数据：<br><img src="https://raw.githubusercontent.com/Li-Weijian/MarkdownPhoto/master/jsonp2.png" alt=""></p>
 <p><strong>从响应中我们可以看出，返回的数据形式和JavaScript函数很像，其实就是在动态模拟一个JavaScript函数调用而已。</strong></p>
 <hr>
-<h4 id="感谢阅读本博客。"><a href="#感谢阅读本博客。" class="headerlink" title="感谢阅读本博客。"></a>感谢阅读本博客。</h4><h4 id="欢迎关注我的博客：https-li-weijian-github-io"><a href="#欢迎关注我的博客：https-li-weijian-github-io" class="headerlink" title="欢迎关注我的博客：https://li-weijian.github.io/"></a>欢迎关注我的博客：<a href="https://li-weijian.github.io/">https://li-weijian.github.io/</a></h4><h4 id="欢迎关注我的CSDN：https-blog-csdn-net-qq352642663"><a href="#欢迎关注我的CSDN：https-blog-csdn-net-qq352642663" class="headerlink" title="欢迎关注我的CSDN：https://blog.csdn.net/qq352642663"></a>欢迎关注我的CSDN：<a href="https://blog.csdn.net/qq352642663">https://blog.csdn.net/qq352642663</a></h4><h4 id="需要联系请加QQ：352642663"><a href="#需要联系请加QQ：352642663" class="headerlink" title="需要联系请加QQ：352642663"></a>需要联系请加QQ：352642663</h4><h4 id="欢迎联系我共同交流"><a href="#欢迎联系我共同交流" class="headerlink" title="欢迎联系我共同交流"></a>欢迎联系我共同交流</h4></script></p>
+<h4 id="感谢阅读本博客。"><a href="#感谢阅读本博客。" class="headerlink" title="感谢阅读本博客。"></a>感谢阅读本博客。</h4><h4 id="欢迎关注我的博客：https-li-weijian-github-io"><a href="#欢迎关注我的博客：https-li-weijian-github-io" class="headerlink" title="欢迎关注我的博客：https://li-weijian.github.io/"></a>欢迎关注我的博客：<a href="https://li-weijian.github.io/" target="_blank" rel="noopener">https://li-weijian.github.io/</a></h4><h4 id="欢迎关注我的CSDN：https-blog-csdn-net-qq352642663"><a href="#欢迎关注我的CSDN：https-blog-csdn-net-qq352642663" class="headerlink" title="欢迎关注我的CSDN：https://blog.csdn.net/qq352642663"></a>欢迎关注我的CSDN：<a href="https://blog.csdn.net/qq352642663" target="_blank" rel="noopener">https://blog.csdn.net/qq352642663</a></h4><h4 id="需要联系请加QQ：352642663"><a href="#需要联系请加QQ：352642663" class="headerlink" title="需要联系请加QQ：352642663"></a>需要联系请加QQ：352642663</h4><h4 id="欢迎联系我共同交流"><a href="#欢迎联系我共同交流" class="headerlink" title="欢迎联系我共同交流"></a>欢迎联系我共同交流</h4>
       
     </div>
     
@@ -559,7 +562,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#同源策略"><span class="nav-number">1.</span> <span class="nav-text">同源策略</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#同源策略"><span class="nav-number">1.</span> <span class="nav-text">同源策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Jsonp"><span class="nav-number">2.</span> <span class="nav-text">Jsonp</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#感谢阅读本博客。"><span class="nav-number">2.1.</span> <span class="nav-text">感谢阅读本博客。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#欢迎关注我的博客：https-li-weijian-github-io"><span class="nav-number">2.2.</span> <span class="nav-text">欢迎关注我的博客：https://li-weijian.github.io/</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#欢迎关注我的CSDN：https-blog-csdn-net-qq352642663"><span class="nav-number">2.3.</span> <span class="nav-text">欢迎关注我的CSDN：https://blog.csdn.net/qq352642663</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#需要联系请加QQ：352642663"><span class="nav-number">2.4.</span> <span class="nav-text">需要联系请加QQ：352642663</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#欢迎联系我共同交流"><span class="nav-number">2.5.</span> <span class="nav-text">欢迎联系我共同交流</span></a></li></ol></li></ol></div>
             
 
           </div>
