@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="设计模式," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="什么是“策略模式”策略模式是一种比较简单的模式，也叫做政策模式。他的定义如下：定义一组算法，将每个算法都封装起来，并且使他们可以互换。 那么，到底什么是策略模式呢？（概念和优缺点在文末，不想看例子的小伙伴可以直接跳到文末）我们来举个例子：我们有一款游戏，游戏有四种角色：射手、刺客、狂战士、剑士， 同时也有四种武器可以提供角色进行切换和攻击，但是每次只能使用一种武器。通过上面这段描述，学习过面向对象">
+<meta name="keywords" content="设计模式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="每天一个设计模式之策略模式">
+<meta property="og:url" content="http://yoursite.com/2018/06/03/每天一个设计模式之策略模式/index.html">
+<meta property="og:site_name" content="liweijian&#39;s blog">
+<meta property="og:description" content="什么是“策略模式”策略模式是一种比较简单的模式，也叫做政策模式。他的定义如下：定义一组算法，将每个算法都封装起来，并且使他们可以互换。 那么，到底什么是策略模式呢？（概念和优缺点在文末，不想看例子的小伙伴可以直接跳到文末）我们来举个例子：我们有一款游戏，游戏有四种角色：射手、刺客、狂战士、剑士， 同时也有四种武器可以提供角色进行切换和攻击，但是每次只能使用一种武器。通过上面这段描述，学习过面向对象">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-06-03T03:35:12.883Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="每天一个设计模式之策略模式">
+<meta name="twitter:description" content="什么是“策略模式”策略模式是一种比较简单的模式，也叫做政策模式。他的定义如下：定义一组算法，将每个算法都封装起来，并且使他们可以互换。 那么，到底什么是策略模式呢？（概念和优缺点在文末，不想看例子的小伙伴可以直接跳到文末）我们来举个例子：我们有一款游戏，游戏有四种角色：射手、刺客、狂战士、剑士， 同时也有四种武器可以提供角色进行切换和攻击，但是每次只能使用一种武器。通过上面这段描述，学习过面向对象">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/06/03/每天一个设计模式之策略模式/"/>
+
+
+
+
+
+  <title>每天一个设计模式之策略模式 | liweijian's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liweijian's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">勿在浮沙筑高塔</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/03/每天一个设计模式之策略模式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="liweijian">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/1519406033201.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liweijian's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">每天一个设计模式之策略模式</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-03T10:17:24+08:00">
+                2018-06-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">设计模式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="什么是“策略模式”"><a href="#什么是“策略模式”" class="headerlink" title="什么是“策略模式”"></a>什么是“策略模式”</h3><p>策略模式是一种比较简单的模式，也叫做政策模式。<br>他的定义如下：<br><strong>定义一组算法，将每个算法都封装起来，并且使他们可以互换。</strong></p>
+<p>那么，到底什么是策略模式呢？<strong>（概念和优缺点在文末，不想看例子的小伙伴可以直接跳到文末）</strong><br>我们来举个例子：我们有一款游戏，游戏有四种角色：射手、刺客、狂战士、剑士， 同时也有四种武器可以提供角色进行切换和攻击，但是每次只能使用一种武器。<br>通过上面这段描述，学习过面向对象的我们可以很轻易地使用继承和抽象设计出以下类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">    <span class="comment">//角色的抽象类</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Role</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">fight</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后分别新建四个类，然后继承Role，再分别实现对应的抽象方法, 在抽象方法中使用具体的武器，这么做确实是可以的。但是我们可以想想，我们现在只有四个武器，假如我们出现了十几个甚至上百个武器的时候，我们可能需要修改fight方法十几次甚至上百次，这将会产生多大的工作量。</p>
+<p>这个时候， 策略模式就派上用场了：<br>我们可以将四种武器提取出来，封装成一个接口WeaponInterface, 然后再分别新建四个武器类实现这个接口。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//武器接口</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">WeaponInterface</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">userWeapon</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">KnifeWeapon</span> <span class="keyword">implements</span> <span class="title">WeaponInterface</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">userWeapon</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"使用匕首进行攻击"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BowAndArrowWeapon</span> <span class="keyword">implements</span> <span class="title">WeaponInterface</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">userWeapon</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"使用弓箭进行攻击"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AxeWeapon</span> <span class="keyword">implements</span> <span class="title">WeaponInterface</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">userWeapon</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"使用斧头进行攻击"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SwordWeapon</span> <span class="keyword">implements</span> <span class="title">WeaponInterface</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">userWeapon</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"使用宝剑进行攻击"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样一来，武器就封装好了。那么怎么使用呢？<br>我们可以在Role抽象类中添加这个武器的接口，并且添加setWeaponInterface的方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">    <span class="comment">//角色的抽象类</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Role</span> </span>&#123;</span><br><span class="line">        WeaponInterface weapon;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">fight</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setWeaponInterface</span><span class="params">(WeaponInterface weaponInterface)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.weaponInterface = weaponInterface;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当创建一个角色的时候，只需要实现Role抽象类即可。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ShooterRole</span> <span class="keyword">extends</span> <span class="title">Role</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ShooterRole</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//设置默认的武器</span></span><br><span class="line">        weaponInterface = <span class="keyword">new</span> KnifeWeapon();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">fight</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.print(<span class="string">"我是射手，我"</span>);</span><br><span class="line">        weaponInterface.userWeapon();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接下来，我们就可以进行测试了：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        Role role = <span class="keyword">new</span> ShooterRole();</span><br><span class="line">        role.fight();</span><br><span class="line">        role.setWeaponInterface(<span class="keyword">new</span> AxeWeapon());</span><br><span class="line">        role.fight();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>输出结果为：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">我是射手，我使用匕首进行攻击</span><br><span class="line">我是射手，我使用斧头进行攻击</span><br></pre></td></tr></table></figure></p>
+<p>到此为止，我们已经实现了武器的动态切换了，同时我们假如添加了其他武器，我们也就不需要每次都去修改fight方法了，只需要使用setWeaponInterface方法就可以动态地切换武器。</p>
+<p><strong>那么，概念来了：</strong><br>策略模式使用的就是面向对象的继承和多态机制，它有三个策略角色，分别是：</p>
+<ul>
+<li>封装角色：例子中的Role或者是射手</li>
+<li>抽象策略角色：武器的接口。策略、算法家族的抽象，通常为接口。</li>
+<li>具体策略角色：各类武器（武器接口的具体实现）。实现抽象策略中的操作，含有具体的算法。</li>
+</ul>
+<h4 id="优点："><a href="#优点：" class="headerlink" title="优点："></a>优点：</h4><ol>
+<li>算法可以自由切换（武器可以自由切换）。</li>
+<li>扩展性好。（增加一个武器的时候只需要实现接口就行）</li>
+<li>避免使用多重判断语句。（切换武器）</li>
+</ol>
+<h4 id="缺点："><a href="#缺点：" class="headerlink" title="缺点："></a>缺点：</h4><ol>
+<li>策略类数量增多。（增加一个武器就需要增加一个类，并且复用的可能性很小）</li>
+<li>所有策略都必须对外暴露。（要使用一个武器，必须要知道有这个武器，了解这个武器。）这个缺点可以使用其他模式来进行修正，比如工厂方法模式、代理模式等等。</li>
+</ol>
+<hr>
+<h4 id="感谢阅读本博客。"><a href="#感谢阅读本博客。" class="headerlink" title="感谢阅读本博客。"></a>感谢阅读本博客。</h4><h4 id="欢迎关注我的博客：https-li-weijian-github-io"><a href="#欢迎关注我的博客：https-li-weijian-github-io" class="headerlink" title="欢迎关注我的博客：https://li-weijian.github.io/"></a>欢迎关注我的博客：<a href="https://li-weijian.github.io/" target="_blank" rel="noopener">https://li-weijian.github.io/</a></h4><h4 id="欢迎关注我的CSDN：https-blog-csdn-net-qq352642663"><a href="#欢迎关注我的CSDN：https-blog-csdn-net-qq352642663" class="headerlink" title="欢迎关注我的CSDN：https://blog.csdn.net/qq352642663"></a>欢迎关注我的CSDN：<a href="https://blog.csdn.net/qq352642663" target="_blank" rel="noopener">https://blog.csdn.net/qq352642663</a></h4><h4 id="需要联系请加QQ：352642663"><a href="#需要联系请加QQ：352642663" class="headerlink" title="需要联系请加QQ：352642663"></a>需要联系请加QQ：352642663</h4><h4 id="欢迎联系我共同交流"><a href="#欢迎联系我共同交流" class="headerlink" title="欢迎联系我共同交流"></a>欢迎联系我共同交流</h4>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/设计模式/" rel="tag"># 设计模式</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/13/Jsonp实现跨域请求_springMVC实现后端接口/" rel="next" title="Jsonp实现跨域请求_springMVC实现后端接口">
+                <i class="fa fa-chevron-left"></i> Jsonp实现跨域请求_springMVC实现后端接口
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/1519406033201.png"
+                alt="liweijian" />
+            
+              <p class="site-author-name" itemprop="name">liweijian</p>
+              <p class="site-description motion-element" itemprop="description">勿在浮沙筑高塔</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Li-Weijian" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/5116599362/profile?rightmod=1&wvr=6&mod=personinfo" target="_blank" title="Weibo">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Weibo</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/li-wei-jian-6-83/activities" target="_blank" title="ZhiHu">
+                      
+                        <i class="fa fa-fw fa-globe"></i>ZhiHu</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是“策略模式”"><span class="nav-number">1.</span> <span class="nav-text">什么是“策略模式”</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#优点："><span class="nav-number">1.1.</span> <span class="nav-text">优点：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缺点："><span class="nav-number">1.2.</span> <span class="nav-text">缺点：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#感谢阅读本博客。"><span class="nav-number">1.3.</span> <span class="nav-text">感谢阅读本博客。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#欢迎关注我的博客：https-li-weijian-github-io"><span class="nav-number">1.4.</span> <span class="nav-text">欢迎关注我的博客：https://li-weijian.github.io/</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#欢迎关注我的CSDN：https-blog-csdn-net-qq352642663"><span class="nav-number">1.5.</span> <span class="nav-text">欢迎关注我的CSDN：https://blog.csdn.net/qq352642663</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#需要联系请加QQ：352642663"><span class="nav-number">1.6.</span> <span class="nav-text">需要联系请加QQ：352642663</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#欢迎联系我共同交流"><span class="nav-number">1.7.</span> <span class="nav-text">欢迎联系我共同交流</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liweijian</span>
+
+  
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_pv">
+  本站访客数:<span id="busuanzi_value_site_pv"></span>
+</span>
+</div>
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
