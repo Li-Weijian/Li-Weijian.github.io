@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="设计模式," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="什么是“单例模式” 单例模式：确保某个类只有一个实例，并且只能自行实例化并且向系统提供这个示例。  单例模式有几个特点：  单例类只能有一个实例 单例类必须自己创建自己的实例 单例类必须给其他类提供这个实例  单例模式在很多场景都可以使用到，比如线程池、缓存、日志对象、打印机或者显卡驱动的对象等等，这些场景下，如果有多个实例的话，可能会导致程序的行为异常、资源使用过量等问题的出现。因此，学习单例模">
+<meta name="keywords" content="设计模式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="每天一个设计模式之单例模式">
+<meta property="og:url" content="http://yoursite.com/2018/06/09/每天一个设计模式之单例模式/index.html">
+<meta property="og:site_name" content="liweijian&#39;s blog">
+<meta property="og:description" content="什么是“单例模式” 单例模式：确保某个类只有一个实例，并且只能自行实例化并且向系统提供这个示例。  单例模式有几个特点：  单例类只能有一个实例 单例类必须自己创建自己的实例 单例类必须给其他类提供这个实例  单例模式在很多场景都可以使用到，比如线程池、缓存、日志对象、打印机或者显卡驱动的对象等等，这些场景下，如果有多个实例的话，可能会导致程序的行为异常、资源使用过量等问题的出现。因此，学习单例模">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-06-09T07:29:48.858Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="每天一个设计模式之单例模式">
+<meta name="twitter:description" content="什么是“单例模式” 单例模式：确保某个类只有一个实例，并且只能自行实例化并且向系统提供这个示例。  单例模式有几个特点：  单例类只能有一个实例 单例类必须自己创建自己的实例 单例类必须给其他类提供这个实例  单例模式在很多场景都可以使用到，比如线程池、缓存、日志对象、打印机或者显卡驱动的对象等等，这些场景下，如果有多个实例的话，可能会导致程序的行为异常、资源使用过量等问题的出现。因此，学习单例模">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/06/09/每天一个设计模式之单例模式/"/>
+
+
+
+
+
+  <title>每天一个设计模式之单例模式 | liweijian's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liweijian's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">勿在浮沙筑高塔</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/09/每天一个设计模式之单例模式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="liweijian">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/1519406033201.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liweijian's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">每天一个设计模式之单例模式</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-09T11:51:00+08:00">
+                2018-06-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">设计模式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="什么是“单例模式”"><a href="#什么是“单例模式”" class="headerlink" title="什么是“单例模式”"></a>什么是“单例模式”</h3><blockquote>
+<p>单例模式：确保某个类只有一个实例，并且只能自行实例化并且向系统提供这个示例。</p>
+</blockquote>
+<p>单例模式有几个特点：</p>
+<ul>
+<li>单例类只能有一个实例</li>
+<li>单例类必须自己创建自己的实例</li>
+<li>单例类必须给其他类提供这个实例</li>
+</ul>
+<p>单例模式在很多场景都可以使用到，比如<strong>线程池、缓存、日志对象、打印机或者显卡驱动的对象</strong>等等，这些场景下，如果有多个实例的话，可能会导致程序的行为异常、资源使用过量等问题的出现。因此，学习单例模式是很有必要的。</p>
+<h3 id="如何实现单例模式"><a href="#如何实现单例模式" class="headerlink" title="如何实现单例模式"></a>如何实现单例模式</h3><p>在单例模式中，主要有两种方式实现单例模式：</p>
+<ul>
+<li>饿汉式</li>
+<li>懒汉式</li>
+</ul>
+<h4 id="1-懒汉式"><a href="#1-懒汉式" class="headerlink" title="1. 懒汉式"></a>1. 懒汉式</h4><p>懒汉：顾名思义，很懒！所以这个实例是在第一次调用的时候才会进行实例化。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//懒汉式单例类.在第一次调用的时候实例化自己   </span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;  </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span> </span>&#123;&#125;  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Singleton single=<span class="keyword">null</span>;  </span><br><span class="line">    <span class="comment">//静态工厂方法   </span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">         <span class="keyword">if</span> (single == <span class="keyword">null</span>) &#123;    </span><br><span class="line">             single = <span class="keyword">new</span> Singleton();  </span><br><span class="line">         &#125;    </span><br><span class="line">        <span class="keyword">return</span> single;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从代码中可以看出，实现懒汉式单例类有两个步骤：</p>
+<ol>
+<li><strong>将构造方法私有化，并将对象设置为静态私有</strong></li>
+<li><strong>提供一个静态方法供外部程序调用获取实例。</strong></li>
+</ol>
+<p>实现了以上两个步骤之后，当外部程序第一个访问这个单例类的时候，Singleton将会进行实例化并返回。</p>
+<p>那么，考虑一个问题：<strong>多线程下会发生什么问题？</strong></p>
+<p>我们可以把自己当做JVM来运行一下这个程序：</p>
+<blockquote>
+<p> 线程一进入getInstance 方法，判断 single == null之后，线程二抢夺了CPU的资源，线程一被挂起，线程二也进入 getInstance 方法，此时因为在线程一中还没有对 Singleton 进行实例化，因此线程二判断为 null ，实例化对象后成功返回。</p>
+<p>这是执行权交回线程一，在停掉的那个地方继续往下执行，实例化 Singleton 对象，再返回。</p>
+<p>这样，导致返回了两个不同的对象，破坏了单例模式的原则：单例类只能有一个实例</p>
+</blockquote>
+<p>那么，怎么解决呢？</p>
+<p>我们有两种方法解决这个问题：</p>
+<ol>
+<li><p><strong>在getInstance方法上加同步</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">         <span class="keyword">if</span> (single == <span class="keyword">null</span>) &#123;    </span><br><span class="line">             single = <span class="keyword">new</span> Singleton();  </span><br><span class="line">         &#125;    </span><br><span class="line">        <span class="keyword">return</span> single;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>双重检查加锁</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">static</span> Singleton single;  </span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">        <span class="keyword">if</span> (singleton == <span class="keyword">null</span>) &#123;    </span><br><span class="line">            <span class="keyword">synchronized</span> (Singleton.class) &#123;    </span><br><span class="line">               <span class="keyword">if</span> (singleton == <span class="keyword">null</span>) &#123;    </span><br><span class="line">                  singleton = <span class="keyword">new</span> Singleton();   </span><br><span class="line">               &#125;    </span><br><span class="line">            &#125;    </span><br><span class="line">        &#125;    </span><br><span class="line">        <span class="keyword">return</span> singleton;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>两种方法的<strong>区别</strong>：</p>
+<ol>
+<li>第一种方式在方法上加了 synchronized ，虽然保证了线程安全，但是每次调用的时候都要进行同步，降低了性能，因为99%的情况下都是不需要同步的。</li>
+<li>第二种方法使用了双重检查加锁的方式，只有在第一次实例化的时候才需要同步。这种方法既保证了线程安全，又保证性能没有大幅度下降。</li>
+</ol>
+<h4 id="2-饿汉式"><a href="#2-饿汉式" class="headerlink" title="2. 饿汉式"></a>2. 饿汉式</h4><p>饿汉式，这个方法就比较简单了。看名字我们也可以看出来，饿汉，那么就代表着在未访问之前就将单例类实例化好了。</p>
+<p>下面是它的代码实现：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//饿汉式单例类.在类初始化时，已经自行实例化   </span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton1</span> </span>&#123;  </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton1</span><span class="params">()</span> </span>&#123;&#125;  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Singleton1 single = <span class="keyword">new</span> Singleton1();  </span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton1 <span class="title">getInstance</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">        <span class="keyword">return</span> single;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>饿汉式在类创建的同时，就已经实例化了一个静态对象，因此是天生线程安全的。</strong></p>
+<h3 id="懒汉式和饿汉式的区别"><a href="#懒汉式和饿汉式的区别" class="headerlink" title="懒汉式和饿汉式的区别"></a>懒汉式和饿汉式的区别</h3><ol>
+<li><p>线程安全</p>
+<p>饿汉式天生线程安全，可以直接使用在多线程环境下。</p>
+<p>懒汉式本身是非线程安全的，要实现线程安全请参考上面代码。</p>
+</li>
+<li><p>性能</p>
+<p>饿汉式在类初始化的时候就会进行实例化单例类。 因此， 在初始化初期会占用较大资源。 但是相应带来的好处就是在第一次调用的时候速度变快。</p>
+<p>懒汉式的初始化策略就是 “ 延迟加载 ” ， 因此在第一次调用的时候会占用较大资源。而且在保证线程安全的解决方法中也存在不同的性能问题（区别请往上回顾一下）。</p>
+</li>
+</ol>
+<h3 id="单例模式的优缺点"><a href="#单例模式的优缺点" class="headerlink" title="单例模式的优缺点"></a>单例模式的优缺点</h3><h4 id="优点："><a href="#优点：" class="headerlink" title="优点："></a>优点：</h4><ol>
+<li>因为只有一个实例，减少了系统性能开支。</li>
+<li>避免对内存的多重占用。</li>
+<li>可以在系统中设置全局访问点，优化和共享资源访问。</li>
+</ol>
+<h4 id="缺点："><a href="#缺点：" class="headerlink" title="缺点："></a>缺点：</h4><ol>
+<li>拓展困难。（没有接口）</li>
+<li>对测试不利。</li>
+<li>与单一原则冲突。<strong>一个类负责单一功能</strong> 。而单例模式 将单例类的实例化和其他业务逻辑放在同一个类中。</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/设计模式/" rel="tag"># 设计模式</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/08/每天一个设计模式之装饰者模式/" rel="next" title="每天一个设计模式之装饰者模式">
+                <i class="fa fa-chevron-left"></i> 每天一个设计模式之装饰者模式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/1519406033201.png"
+                alt="liweijian" />
+            
+              <p class="site-author-name" itemprop="name">liweijian</p>
+              <p class="site-description motion-element" itemprop="description">勿在浮沙筑高塔</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Li-Weijian" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/5116599362/profile?rightmod=1&wvr=6&mod=personinfo" target="_blank" title="Weibo">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Weibo</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/li-wei-jian-6-83/activities" target="_blank" title="ZhiHu">
+                      
+                        <i class="fa fa-fw fa-globe"></i>ZhiHu</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是“单例模式”"><span class="nav-number">1.</span> <span class="nav-text">什么是“单例模式”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何实现单例模式"><span class="nav-number">2.</span> <span class="nav-text">如何实现单例模式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-懒汉式"><span class="nav-number">2.1.</span> <span class="nav-text">1. 懒汉式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-饿汉式"><span class="nav-number">2.2.</span> <span class="nav-text">2. 饿汉式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#懒汉式和饿汉式的区别"><span class="nav-number">3.</span> <span class="nav-text">懒汉式和饿汉式的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单例模式的优缺点"><span class="nav-number">4.</span> <span class="nav-text">单例模式的优缺点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#优点："><span class="nav-number">4.1.</span> <span class="nav-text">优点：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缺点："><span class="nav-number">4.2.</span> <span class="nav-text">缺点：</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liweijian</span>
+
+  
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_pv">
+  本站访客数:<span id="busuanzi_value_site_pv"></span>
+</span>
+</div>
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
