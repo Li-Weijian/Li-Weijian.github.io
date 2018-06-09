@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="liweijian&#39;s blog">
 <meta property="og:description" content="什么是“单例模式” 单例模式：确保某个类只有一个实例，并且只能自行实例化并且向系统提供这个示例。  单例模式有几个特点：  单例类只能有一个实例 单例类必须自己创建自己的实例 单例类必须给其他类提供这个实例  单例模式在很多场景都可以使用到，比如线程池、缓存、日志对象、打印机或者显卡驱动的对象等等，这些场景下，如果有多个实例的话，可能会导致程序的行为异常、资源使用过量等问题的出现。因此，学习单例模">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-09T07:29:48.858Z">
+<meta property="og:updated_time" content="2018-06-09T07:33:08.674Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="每天一个设计模式之单例模式">
 <meta name="twitter:description" content="什么是“单例模式” 单例模式：确保某个类只有一个实例，并且只能自行实例化并且向系统提供这个示例。  单例模式有几个特点：  单例类只能有一个实例 单例类必须自己创建自己的实例 单例类必须给其他类提供这个实例  单例模式在很多场景都可以使用到，比如线程池、缓存、日志对象、打印机或者显卡驱动的对象等等，这些场景下，如果有多个实例的话，可能会导致程序的行为异常、资源使用过量等问题的出现。因此，学习单例模">
@@ -379,8 +379,8 @@
 <p>我们可以把自己当做JVM来运行一下这个程序：</p>
 <blockquote>
 <p> 线程一进入getInstance 方法，判断 single == null之后，线程二抢夺了CPU的资源，线程一被挂起，线程二也进入 getInstance 方法，此时因为在线程一中还没有对 Singleton 进行实例化，因此线程二判断为 null ，实例化对象后成功返回。</p>
-<p>这是执行权交回线程一，在停掉的那个地方继续往下执行，实例化 Singleton 对象，再返回。</p>
-<p>这样，导致返回了两个不同的对象，破坏了单例模式的原则：单例类只能有一个实例</p>
+<p> 这是执行权交回线程一，在停掉的那个地方继续往下执行，实例化 Singleton 对象，再返回。</p>
+<p> 这样，导致返回了两个不同的对象，破坏了单例模式的原则：单例类只能有一个实例</p>
 </blockquote>
 <p>那么，怎么解决呢？</p>
 <p>我们有两种方法解决这个问题：</p>
@@ -421,6 +421,11 @@
 <li>对测试不利。</li>
 <li>与单一原则冲突。<strong>一个类负责单一功能</strong> 。而单例模式 将单例类的实例化和其他业务逻辑放在同一个类中。</li>
 </ol>
+<hr>
+<h3 id="感谢阅读本博客。"><a href="#感谢阅读本博客。" class="headerlink" title="感谢阅读本博客。"></a>感谢阅读本博客。</h3><p><strong>欢迎关注我的博客：<a href="https://li-weijian.github.io/" target="_blank" rel="noopener">https://li-weijian.github.io/</a></strong></p>
+<p><strong>欢迎关注我的CSDN：<a href="https://blog.csdn.net/qq352642663" target="_blank" rel="noopener">https://blog.csdn.net/qq352642663</a></strong></p>
+<p><strong>需要联系请加QQ：352642663</strong></p>
+<p><strong>欢迎联系我共同交流</strong></p>
 
       
     </div>
@@ -617,7 +622,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是“单例模式”"><span class="nav-number">1.</span> <span class="nav-text">什么是“单例模式”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何实现单例模式"><span class="nav-number">2.</span> <span class="nav-text">如何实现单例模式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-懒汉式"><span class="nav-number">2.1.</span> <span class="nav-text">1. 懒汉式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-饿汉式"><span class="nav-number">2.2.</span> <span class="nav-text">2. 饿汉式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#懒汉式和饿汉式的区别"><span class="nav-number">3.</span> <span class="nav-text">懒汉式和饿汉式的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单例模式的优缺点"><span class="nav-number">4.</span> <span class="nav-text">单例模式的优缺点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#优点："><span class="nav-number">4.1.</span> <span class="nav-text">优点：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缺点："><span class="nav-number">4.2.</span> <span class="nav-text">缺点：</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是“单例模式”"><span class="nav-number">1.</span> <span class="nav-text">什么是“单例模式”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何实现单例模式"><span class="nav-number">2.</span> <span class="nav-text">如何实现单例模式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-懒汉式"><span class="nav-number">2.1.</span> <span class="nav-text">1. 懒汉式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-饿汉式"><span class="nav-number">2.2.</span> <span class="nav-text">2. 饿汉式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#懒汉式和饿汉式的区别"><span class="nav-number">3.</span> <span class="nav-text">懒汉式和饿汉式的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单例模式的优缺点"><span class="nav-number">4.</span> <span class="nav-text">单例模式的优缺点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#优点："><span class="nav-number">4.1.</span> <span class="nav-text">优点：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缺点："><span class="nav-number">4.2.</span> <span class="nav-text">缺点：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#感谢阅读本博客。"><span class="nav-number">5.</span> <span class="nav-text">感谢阅读本博客。</span></a></li></ol></div>
             
 
           </div>
