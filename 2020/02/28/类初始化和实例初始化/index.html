@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="面试,Java," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="类初始化过程1. 一个类要创建实例需要先加载并初始化该类 main方法所在的类需要先加载和初始化  2.一个子类要初始化需要先初始化父类3. 一个类初始化就是执行 ()  方法 () 方法由静态类变量显式赋值代码和静态代码块组成 类变量显式赋值代码和静态代码块代码 从上到下顺序执行 () 方法只执行一次   通俗理解： 类初始化的过程， 就是执行 clinit() 的过程，clinit() 负责初">
+<meta name="keywords" content="面试,Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java类初始化过程和实例初始化过程">
+<meta property="og:url" content="http://yoursite.com/2020/02/28/类初始化和实例初始化/index.html">
+<meta property="og:site_name" content="liweijian&#39;s blog">
+<meta property="og:description" content="类初始化过程1. 一个类要创建实例需要先加载并初始化该类 main方法所在的类需要先加载和初始化  2.一个子类要初始化需要先初始化父类3. 一个类初始化就是执行 ()  方法 () 方法由静态类变量显式赋值代码和静态代码块组成 类变量显式赋值代码和静态代码块代码 从上到下顺序执行 () 方法只执行一次   通俗理解： 类初始化的过程， 就是执行 clinit() 的过程，clinit() 负责初">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-03-01T07:18:42.042Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java类初始化过程和实例初始化过程">
+<meta name="twitter:description" content="类初始化过程1. 一个类要创建实例需要先加载并初始化该类 main方法所在的类需要先加载和初始化  2.一个子类要初始化需要先初始化父类3. 一个类初始化就是执行 ()  方法 () 方法由静态类变量显式赋值代码和静态代码块组成 类变量显式赋值代码和静态代码块代码 从上到下顺序执行 () 方法只执行一次   通俗理解： 类初始化的过程， 就是执行 clinit() 的过程，clinit() 负责初">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/02/28/类初始化和实例初始化/"/>
+
+
+
+
+
+  <title>Java类初始化过程和实例初始化过程 | liweijian's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liweijian's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">勿在浮沙筑高塔</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/28/类初始化和实例初始化/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="liweijian">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/1519406033201.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liweijian's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java类初始化过程和实例初始化过程</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-28T20:00:00+08:00">
+                2020-02-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试/" itemprop="url" rel="index">
+                    <span itemprop="name">面试</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="类初始化过程"><a href="#类初始化过程" class="headerlink" title="类初始化过程"></a>类初始化过程</h3><h4 id="1-一个类要创建实例需要先加载并初始化该类"><a href="#1-一个类要创建实例需要先加载并初始化该类" class="headerlink" title="1. 一个类要创建实例需要先加载并初始化该类"></a>1. 一个类要创建实例需要先加载并初始化该类</h4><ul>
+<li>main方法所在的类需要先加载和初始化</li>
+</ul>
+<h4 id="2-一个子类要初始化需要先初始化父类"><a href="#2-一个子类要初始化需要先初始化父类" class="headerlink" title="2.一个子类要初始化需要先初始化父类"></a>2.一个子类要初始化需要先初始化父类</h4><h4 id="3-一个类初始化就是执行-方法"><a href="#3-一个类初始化就是执行-方法" class="headerlink" title="3. 一个类初始化就是执行 ()  方法"></a>3. 一个类初始化就是执行 <clinit>()  方法</clinit></h4><ul>
+<li><clinit>() 方法由<strong>静态类变量显式赋值代码</strong>和<strong>静态代码块</strong>组成</clinit></li>
+<li>类变量显式赋值代码和静态代码块代码 <strong>从上到下顺序执行</strong></li>
+<li><clinit>() 方法只执行一次</clinit></li>
+</ul>
+<blockquote>
+<p>通俗理解： 类初始化的过程， 就是执行 clinit() 的过程，clinit() 负责初始化静态变量和静态代码块。</p>
+<p>​                    同时，在初始化子类之前，需要先初始化父类</p>
+</blockquote>
+<h3 id="实例初始化过程"><a href="#实例初始化过程" class="headerlink" title="实例初始化过程"></a>实例初始化过程</h3><h4 id="1-实例初始化就是执行-（）方法"><a href="#1-实例初始化就是执行-（）方法" class="headerlink" title="1. 实例初始化就是执行 （）方法"></a>1. 实例初始化就是执行 <init>（）方法</init></h4><ul>
+<li><init>()方法可能重载有多个，有几个构造器就有几个<init>方法</init></init></li>
+<li><init>()方法由<strong>非静态实例变量显示赋值代码</strong>和<strong>非静态代码块</strong>、<strong>对应构造器代码</strong>组成</init></li>
+<li>非静态实例变量显示赋值代码和非静态代码块代码<strong>从上到下顺序执行</strong>，而对应构造器的代码最后执行</li>
+<li>每次创建实例对象，调用对应构造器，执行的就是对应的<init>方法</init></li>
+<li><init>方法的首行是super()或super(实参列表)，即对应父类的<init>方法</init></init></li>
+</ul>
+<blockquote>
+<p>通俗理解： 实例初始化的过程就是 执行<init>()方法的过程，<init>() 方法负责初始化非静态变量和非静态代码块以及构造器。同时，在子类实例初始化之前，要先初始化父类实例。</init></init></p>
+</blockquote>
+<h3 id="方法的重写"><a href="#方法的重写" class="headerlink" title="方法的重写"></a>方法的重写</h3><h4 id="1-哪些方法不可以被重写"><a href="#1-哪些方法不可以被重写" class="headerlink" title="1. 哪些方法不可以被重写"></a>1. 哪些方法不可以被重写</h4><ul>
+<li>final 方法</li>
+<li>静态方法</li>
+<li>private等子类中不可见方法</li>
+</ul>
+<h4 id="2-对象的多态性"><a href="#2-对象的多态性" class="headerlink" title="2. 对象的多态性"></a>2. 对象的多态性</h4><ul>
+<li>子类如果重写了父类的方法，通过子类对象调用的一定是<strong>子类</strong>重写过的代码</li>
+<li>非静态方法默认的调用对象是 <strong>this</strong></li>
+<li>this对象在构造器或者在<init>方法中就是正在创建的对象</init></li>
+</ul>
+<h4 id="测试代码"><a href="#测试代码" class="headerlink" title="测试代码"></a>测试代码</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 子类的初始化&lt;clinit&gt;：</span></span><br><span class="line"><span class="comment"> * （1）j = method();</span></span><br><span class="line"><span class="comment"> * （2）子类的静态代码块</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * 先初始化父类：(5)(1)</span></span><br><span class="line"><span class="comment"> * 初始化子类：（10）(6)</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * 子类的实例化方法&lt;init&gt;：</span></span><br><span class="line"><span class="comment"> * （1）super()（最前）      （9）（3）（2）</span></span><br><span class="line"><span class="comment"> * （2）i = test();    （9）</span></span><br><span class="line"><span class="comment"> * （3）子类的非静态代码块    （8）</span></span><br><span class="line"><span class="comment"> * （4）子类的无参构造（最后） （7）</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * 因为创建了两个Son对象，因此实例化方法&lt;init&gt;执行两次</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * （9）（3）（2）（9）（8）（7）</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Son</span> <span class="keyword">extends</span> <span class="title">Father</span></span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> i = test();</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> j = method();</span><br><span class="line">	<span class="keyword">static</span>&#123;</span><br><span class="line">		System.out.print(<span class="string">"(6)"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	Son()&#123;</span><br><span class="line"><span class="comment">//		super();//写或不写都在，在子类构造器中一定会调用父类的构造器</span></span><br><span class="line">		System.out.print(<span class="string">"(7)"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	&#123;</span><br><span class="line">		System.out.print(<span class="string">"(8)"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">test</span><span class="params">()</span></span>&#123;</span><br><span class="line">		System.out.print(<span class="string">"(9)"</span>);</span><br><span class="line">		<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">method</span><span class="params">()</span></span>&#123;</span><br><span class="line">		System.out.print(<span class="string">"(10)"</span>);</span><br><span class="line">		<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		Son s1 = <span class="keyword">new</span> Son();</span><br><span class="line">		System.out.println();</span><br><span class="line">		Son s2 = <span class="keyword">new</span> Son();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 父类的初始化&lt;clinit&gt;：</span></span><br><span class="line"><span class="comment"> * （1）j = method();</span></span><br><span class="line"><span class="comment"> * （2）父类的静态代码块</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> *  父类的实例化方法&lt;init&gt;：</span></span><br><span class="line"><span class="comment"> * （1）super()（最前）</span></span><br><span class="line"><span class="comment"> * （2）i = test();</span></span><br><span class="line"><span class="comment"> * （3）父类的非静态代码块</span></span><br><span class="line"><span class="comment"> * （4）父类的无参构造（最后）</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * 非静态方法前面其实有一个默认的对象this</span></span><br><span class="line"><span class="comment"> * this在构造器（或&lt;init&gt;）它表示的是正在创建的对象，因为这里是在创建Son对象，所以</span></span><br><span class="line"><span class="comment"> * test()执行的是子类重写的代码（面向对象多态）</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * 这里i=test()执行的是子类重写的test()方法</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Father</span></span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> i = test();</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> j = method();</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">static</span>&#123;</span><br><span class="line">		System.out.print(<span class="string">"(1)"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	Father()&#123;</span><br><span class="line">		System.out.print(<span class="string">"(2)"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	&#123;</span><br><span class="line">		System.out.print(<span class="string">"(3)"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">test</span><span class="params">()</span></span>&#123;</span><br><span class="line">		System.out.print(<span class="string">"(4)"</span>);</span><br><span class="line">		<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">method</span><span class="params">()</span></span>&#123;</span><br><span class="line">		System.out.print(<span class="string">"(5)"</span>);</span><br><span class="line">		<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="进阶"><a href="#进阶" class="headerlink" title="进阶"></a>进阶</h3><p>了解JVM中关于clinit 和 init 方法的说明、invokespecial指令</p>
+<hr>
+<h4 id="感谢阅读本博客。"><a href="#感谢阅读本博客。" class="headerlink" title="感谢阅读本博客。"></a>感谢阅读本博客。</h4><h4 id="欢迎关注我的博客：https-li-weijian-github-io"><a href="#欢迎关注我的博客：https-li-weijian-github-io" class="headerlink" title="欢迎关注我的博客：https://li-weijian.github.io/"></a>欢迎关注我的博客：<a href="https://li-weijian.github.io/" target="_blank" rel="noopener">https://li-weijian.github.io/</a></h4><h4 id="欢迎关注我的CSDN：https-blog-csdn-net-qq352642663"><a href="#欢迎关注我的CSDN：https-blog-csdn-net-qq352642663" class="headerlink" title="欢迎关注我的CSDN：https://blog.csdn.net/qq352642663"></a>欢迎关注我的CSDN：<a href="https://blog.csdn.net/qq352642663" target="_blank" rel="noopener">https://blog.csdn.net/qq352642663</a></h4><h4 id="需要联系请加QQ：352642663"><a href="#需要联系请加QQ：352642663" class="headerlink" title="需要联系请加QQ：352642663"></a>需要联系请加QQ：352642663</h4><h4 id="欢迎联系我共同交流"><a href="#欢迎联系我共同交流" class="headerlink" title="欢迎联系我共同交流"></a>欢迎联系我共同交流</h4>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/面试/" rel="tag"># 面试</a>
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/12/每天一个设计模式之工厂方法模式/" rel="next" title="每天一个设计模式之工厂方法模式">
+                <i class="fa fa-chevron-left"></i> 每天一个设计模式之工厂方法模式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/1519406033201.png"
+                alt="liweijian" />
+            
+              <p class="site-author-name" itemprop="name">liweijian</p>
+              <p class="site-description motion-element" itemprop="description">勿在浮沙筑高塔</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Li-Weijian" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/5116599362/profile?rightmod=1&wvr=6&mod=personinfo" target="_blank" title="Weibo">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Weibo</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/li-wei-jian-6-83/activities" target="_blank" title="ZhiHu">
+                      
+                        <i class="fa fa-fw fa-globe"></i>ZhiHu</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#类初始化过程"><span class="nav-number">1.</span> <span class="nav-text">类初始化过程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-一个类要创建实例需要先加载并初始化该类"><span class="nav-number">1.1.</span> <span class="nav-text">1. 一个类要创建实例需要先加载并初始化该类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-一个子类要初始化需要先初始化父类"><span class="nav-number">1.2.</span> <span class="nav-text">2.一个子类要初始化需要先初始化父类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-一个类初始化就是执行-方法"><span class="nav-number">1.3.</span> <span class="nav-text">3. 一个类初始化就是执行 ()  方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例初始化过程"><span class="nav-number">2.</span> <span class="nav-text">实例初始化过程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-实例初始化就是执行-（）方法"><span class="nav-number">2.1.</span> <span class="nav-text">1. 实例初始化就是执行 （）方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法的重写"><span class="nav-number">3.</span> <span class="nav-text">方法的重写</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-哪些方法不可以被重写"><span class="nav-number">3.1.</span> <span class="nav-text">1. 哪些方法不可以被重写</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-对象的多态性"><span class="nav-number">3.2.</span> <span class="nav-text">2. 对象的多态性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试代码"><span class="nav-number">3.3.</span> <span class="nav-text">测试代码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进阶"><span class="nav-number">4.</span> <span class="nav-text">进阶</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#感谢阅读本博客。"><span class="nav-number">4.1.</span> <span class="nav-text">感谢阅读本博客。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#欢迎关注我的博客：https-li-weijian-github-io"><span class="nav-number">4.2.</span> <span class="nav-text">欢迎关注我的博客：https://li-weijian.github.io/</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#欢迎关注我的CSDN：https-blog-csdn-net-qq352642663"><span class="nav-number">4.3.</span> <span class="nav-text">欢迎关注我的CSDN：https://blog.csdn.net/qq352642663</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#需要联系请加QQ：352642663"><span class="nav-number">4.4.</span> <span class="nav-text">需要联系请加QQ：352642663</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#欢迎联系我共同交流"><span class="nav-number">4.5.</span> <span class="nav-text">欢迎联系我共同交流</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liweijian</span>
+
+  
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_pv">
+  本站访客数:<span id="busuanzi_value_site_pv"></span>
+</span>
+</div>
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
