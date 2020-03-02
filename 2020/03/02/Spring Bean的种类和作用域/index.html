@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Mybatis," />
+  <meta name="keywords" content="面试,Spring," />
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="今天做项目的时候需要使用到分页技术，刚好了解到一款分页插件可以使用mybatis进行配置，因此学习使用之后写下这篇博客，巩固自己以及供大家学习使用。 什么是PageHelper如果你也在用Mybatis，建议尝试该分页插件，这个一定是最方便使用的分页插件。该插件目前支持Oracle,Mysql,MariaDB,SQLite,Hsqldb,PostgreSQL六种数据库分页。 如何使用PageHel">
-<meta name="keywords" content="Mybatis">
+<meta name="description" content="一、种类 普通Bean 123//spring直接创建A实例，并返回。xml声明： &amp;lt;bean  id=&quot;&quot;  class=&quot;A&quot;&amp;gt; 注解声明： @Bean  FactoryBean 首先它是一个Bean，但又不仅仅是一个Bean。它是一个能生产或修饰对象生成的工厂Bean，类似于设计模式中的工厂模式和装饰器模式。它能在需要的时候生产一个对象，且不仅仅限于它自身，它能返回任何Bean的">
+<meta name="keywords" content="面试,Spring">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MyBatis插件之PageHelper分页">
-<meta property="og:url" content="http://yoursite.com/2018/04/28/MyBatis插件之PageHelper分页/index.html">
+<meta property="og:title" content="Spring Bean的种类和作用域">
+<meta property="og:url" content="http://yoursite.com/2020/03/02/Spring Bean的种类和作用域/index.html">
 <meta property="og:site_name" content="liweijian&#39;s blog">
-<meta property="og:description" content="今天做项目的时候需要使用到分页技术，刚好了解到一款分页插件可以使用mybatis进行配置，因此学习使用之后写下这篇博客，巩固自己以及供大家学习使用。 什么是PageHelper如果你也在用Mybatis，建议尝试该分页插件，这个一定是最方便使用的分页插件。该插件目前支持Oracle,Mysql,MariaDB,SQLite,Hsqldb,PostgreSQL六种数据库分页。 如何使用PageHel">
+<meta property="og:description" content="一、种类 普通Bean 123//spring直接创建A实例，并返回。xml声明： &amp;lt;bean  id=&quot;&quot;  class=&quot;A&quot;&amp;gt; 注解声明： @Bean  FactoryBean 首先它是一个Bean，但又不仅仅是一个Bean。它是一个能生产或修饰对象生成的工厂Bean，类似于设计模式中的工厂模式和装饰器模式。它能在需要的时候生产一个对象，且不仅仅限于它自身，它能返回任何Bean的">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-03-02T09:16:17.866Z">
+<meta property="og:updated_time" content="2020-03-02T09:50:39.572Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MyBatis插件之PageHelper分页">
-<meta name="twitter:description" content="今天做项目的时候需要使用到分页技术，刚好了解到一款分页插件可以使用mybatis进行配置，因此学习使用之后写下这篇博客，巩固自己以及供大家学习使用。 什么是PageHelper如果你也在用Mybatis，建议尝试该分页插件，这个一定是最方便使用的分页插件。该插件目前支持Oracle,Mysql,MariaDB,SQLite,Hsqldb,PostgreSQL六种数据库分页。 如何使用PageHel">
+<meta name="twitter:title" content="Spring Bean的种类和作用域">
+<meta name="twitter:description" content="一、种类 普通Bean 123//spring直接创建A实例，并返回。xml声明： &amp;lt;bean  id=&quot;&quot;  class=&quot;A&quot;&amp;gt; 注解声明： @Bean  FactoryBean 首先它是一个Bean，但又不仅仅是一个Bean。它是一个能生产或修饰对象生成的工厂Bean，类似于设计模式中的工厂模式和装饰器模式。它能在需要的时候生产一个对象，且不仅仅限于它自身，它能返回任何Bean的">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/04/28/MyBatis插件之PageHelper分页/"/>
+  <link rel="canonical" href="http://yoursite.com/2020/03/02/Spring Bean的种类和作用域/"/>
 
 
 
 
 
-  <title>MyBatis插件之PageHelper分页 | liweijian's blog</title>
+  <title>Spring Bean的种类和作用域 | liweijian's blog</title>
   
 
 
@@ -263,7 +263,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/28/MyBatis插件之PageHelper分页/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/02/Spring Bean的种类和作用域/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="liweijian">
@@ -280,7 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">MyBatis插件之PageHelper分页</h1>
+          <h1 class="post-title" itemprop="name headline">Spring Bean的种类和作用域</h1>
         
 
         <div class="post-meta">
@@ -292,8 +292,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-28T21:57:59+08:00">
-                2018-04-28
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-02T17:14:49+08:00">
+                2020-03-02
               </time>
             
 
@@ -315,8 +315,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Mybatis/" itemprop="url" rel="index">
-                    <span itemprop="name">Mybatis</span>
+                  <a href="/categories/Spring/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring</span>
                   </a>
                 </span>
 
@@ -352,52 +352,42 @@
       
 
       
-        <p>今天做项目的时候需要使用到分页技术，刚好了解到一款分页插件可以使用mybatis进行配置，因此学习使用之后写下这篇博客，巩固自己以及供大家学习使用。</p>
-<h3 id="什么是PageHelper"><a href="#什么是PageHelper" class="headerlink" title="什么是PageHelper"></a>什么是PageHelper</h3><p>如果你也在用Mybatis，建议尝试该分页插件，这个一定是最方便使用的分页插件。<br>该插件目前支持Oracle,Mysql,MariaDB,SQLite,Hsqldb,PostgreSQL六种数据库分页。</p>
-<h3 id="如何使用PageHelper"><a href="#如何使用PageHelper" class="headerlink" title="如何使用PageHelper"></a>如何使用PageHelper</h3><p>分页插件项目中的正式代码一共有个5个Java文件，这5个文件的说明如下：</p>
+        <h3 id="一、种类"><a href="#一、种类" class="headerlink" title="一、种类"></a>一、种类</h3><ol>
+<li><p>普通Bean</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">//spring直接创建A实例，并返回。</span><br><span class="line">xml声明： <span class="tag">&lt;<span class="name">bean</span>  <span class="attr">id</span>=<span class="string">""</span>  <span class="attr">class</span>=<span class="string">"A"</span>&gt;</span> </span><br><span class="line">注解声明： @Bean</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>FactoryBean</p>
+<p>首先它是一个Bean，但又不仅仅是一个Bean。它是一个能生产或修饰对象生成的工厂Bean，类似于设计模式中的工厂模式和装饰器模式。它能在需要的时候生产一个对象，且不仅仅限于它自身，它能返回任何Bean的实例。 </p>
+</li>
+<li><p>BeanFactory</p>
+<p><code>BeanFactory</code>是一个接口，它是Spring中工厂的顶层规范，是SpringIoc容器的核心接口，它定义了<code>getBean()</code>、<code>containsBean()</code>等管理Bean的通用方法。Spring的容器都是它的具体实现如：</p>
 <ul>
-<li>Page<e>[必须]:分页参数类，该类继承ArrayList，虽然分页查询返回的结果实际类型是Page<e>,但是可以完全不出现所有的代码中，可以直接当成List使用。返回值不建议使用Page，建议仍然用List。如果需要用到分页信息，使用下面的PageInfo类对List进行包装即可。</e></e></li>
-<li>PageHelper[必须]：分页插件拦截器类，对Mybatis的拦截在这个类中实现。</li>
-<li>PageInfo[可选]：Page<e>的包装类，包含了全面的分页属性信息。</e></li>
-<li>SqlParser[可选]：提供高效的count查询sql。主要是智能替换原sql语句为count(*)，去除不带参数的order by语句。需要jsqlparser-0.9.1.jar支持。</li>
-<li>SqlUtil[必须]：分页插件工具类，分页插件逻辑类，分页插件的主要实现方法都在这个类中</li>
+<li>DefaultListableBeanFactory</li>
+<li>XmlBeanFactory</li>
+<li>ApplicationContext</li>
 </ul>
-<ol>
-<li>引入分页插件 – 提供三种方式</li>
+<p>这些实现类又从不同的维度分别有不同的扩展。</p>
+</li>
+<li><p>FactoryBean 和  BeanFactory 区别： </p>
+<p>BeanFactory：是一个工厂（其实是构建了一个spring上下文的环境，容器），用来管理和获取很多Bean对象，例如：加载applicationContext.xml文件。<br>FactoryBean：是一个Bean生成工具，是用来获取一种类型对象的Bean，它是构造Bean实例的一种方式。</p>
+</li>
 </ol>
-<ul>
-<li>引入分页代码</li>
-<li>引入jar包</li>
-<li>使用Maven引入 – 此处使用maven进入引入<br>添加如下依赖：<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.pagehelper<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>pagehelper<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.4.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.jsqlparser<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jsqlparser<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>0.9.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="二、作用域"><a href="#二、作用域" class="headerlink" title="二、作用域"></a>二、作用域</h3><ul>
+<li><p>singleton  单例，<strong>默认值</strong>。</p>
+<p>说明：在Spring IoC容器中仅存在一个Bean实例， Bean以单例方式存在，在<strong>容器启动时创建</strong></p>
+</li>
+<li><p>prototype  多例</p>
+<p>说明：每次从容器中调用Bean时，都返回一个新的实例，即每次调用getBean()时，相当于执行new XxxBean()， 在<strong>调用时创建</strong></p>
+</li>
+<li><p>request</p>
+<p>说明：每次HTTP请求都会创建一个新的Bean， 该作用域仅适用于WebApplicationContext环境</p>
+</li>
+<li><p>session</p>
+<p>说明：同一个HTTP Session 共享一个Bean， 不用Session 使用不同的Bean，  该作用域仅适用于WebApplicationContext环境</p>
 </li>
 </ul>
-<ol start="2">
-<li>在SqlMapConfig.xml中进行配置<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 配置PageHelper插件 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span> <span class="attr">interceptor</span>=<span class="string">"com.github.pagehelper.PageHelper"</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 配置数据库方言 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"dialect"</span> <span class="attr">value</span>=<span class="string">"mysql"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<ul>
-<li>dialect属性，使用时必须指定该属性，可选值为oracle,mysql,mariadb,sqlite,hsqldb，postgresql,<strong><em>没有默认值，必须指定该属性。</em></strong></li>
-</ul>
-<ol start="3">
-<li>在代码中使用<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PageHelperTest</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testPageHelper</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">//读取Spring配置文件</span></span><br><span class="line">        ApplicationContext context = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">"classpath:/spring/applicationContext-dao.xml"</span>);</span><br><span class="line">        <span class="comment">//使用mybatis的Mapper动态代理进行开发，获取到接口mapper</span></span><br><span class="line">        TbItemMapper itemMapper = context.getBean(TbItemMapper.class);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//设置分页信息 -- 必须要放在查询的前面</span></span><br><span class="line">        PageHelper.startPage(<span class="number">1</span>,<span class="number">10</span>);</span><br><span class="line">        <span class="comment">//执行查询 -- 此时使用的方法和参数是用过mybatis的逆向工程生成的mapper和pojo</span></span><br><span class="line">        List&lt;TbItem&gt; itemList = itemMapper.selectByExample(<span class="keyword">new</span> TbItemExample());</span><br><span class="line"></span><br><span class="line">        <span class="comment">//获取分页信息</span></span><br><span class="line">        PageInfo&lt;TbItem&gt; pageInfo = <span class="keyword">new</span> PageInfo&lt;&gt;(itemList);</span><br><span class="line">        System.out.println(pageInfo.getTotal());</span><br><span class="line">        System.out.println(pageInfo.getSize());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h3 id="重要提示"><a href="#重要提示" class="headerlink" title="重要提示"></a>重要提示</h3><ol>
-<li><p>PageHelper.startPage方法<br>只有紧跟在PageHelper.startPage方法后的第一个Mybatis的查询（Select方法）方法会被分页。</p>
-</li>
-<li><p>分页插件不支持带有for update语句的分页<br>对于带有for update的sql，会抛出运行时异常，对于这样的sql建议手动分页，毕竟这样的sql需要重视。</p>
-</li>
-<li><p>分页插件不支持关联结果查询<br>原因以及解决方法可以看这里：<br><a href="http://my.oschina.net/flags/blog/274000" target="_blank" rel="noopener">http://my.oschina.net/flags/blog/274000</a><br>分支插件不支持关联结果查询，但是支持关联嵌套查询。只会对主sql进行分页，嵌套的sql不会被分页。</p>
-</li>
-</ol>
-<h3 id="相关链接"><a href="#相关链接" class="headerlink" title="相关链接"></a>相关链接</h3><p>GitHub的项目地址:<a href="https://github.com/pagehelper/Mybatis-PageHelper" target="_blank" rel="noopener">https://github.com/pagehelper/Mybatis-PageHelper</a></p>
 <hr>
-<p>####感谢阅读本博客。</p>
-<p>####欢迎关注我的博客：<a href="https://li-weijian.github.io/" target="_blank" rel="noopener">https://li-weijian.github.io/</a></p>
-<p>####欢迎关注我的CSDN：<a href="https://blog.csdn.net/qq352642663" target="_blank" rel="noopener">https://blog.csdn.net/qq352642663</a></p>
-<p>####需要联系请加QQ：352642663</p>
-<p>####欢迎联系我共同交流</p>
-
+<h4 id="感谢阅读本博客。"><a href="#感谢阅读本博客。" class="headerlink" title="感谢阅读本博客。"></a>感谢阅读本博客。</h4><h4 id="欢迎关注我的博客：https-li-weijian-github-io"><a href="#欢迎关注我的博客：https-li-weijian-github-io" class="headerlink" title="欢迎关注我的博客：https://li-weijian.github.io/"></a>欢迎关注我的博客：<a href="https://li-weijian.github.io/" target="_blank" rel="noopener">https://li-weijian.github.io/</a></h4><h4 id="欢迎关注我的CSDN：https-blog-csdn-net-qq352642663"><a href="#欢迎关注我的CSDN：https-blog-csdn-net-qq352642663" class="headerlink" title="欢迎关注我的CSDN：https://blog.csdn.net/qq352642663"></a>欢迎关注我的CSDN：<a href="https://blog.csdn.net/qq352642663" target="_blank" rel="noopener">https://blog.csdn.net/qq352642663</a></h4><h4 id="需要联系请加QQ：352642663"><a href="#需要联系请加QQ：352642663" class="headerlink" title="需要联系请加QQ：352642663"></a>需要联系请加QQ：352642663</h4><h4 id="欢迎联系我共同交流"><a href="#欢迎联系我共同交流" class="headerlink" title="欢迎联系我共同交流"></a>欢迎联系我共同交流</h4>
       
     </div>
     
@@ -414,7 +404,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Mybatis/" rel="tag"># Mybatis</a>
+            <a href="/tags/面试/" rel="tag"># 面试</a>
+          
+            <a href="/tags/Spring/" rel="tag"># Spring</a>
           
         </div>
       
@@ -427,8 +419,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/04/19/Spring-MVC之绑定参数/" rel="next" title="Spring MVC之绑定参数">
-                <i class="fa fa-chevron-left"></i> Spring MVC之绑定参数
+              <a href="/2020/03/01/Java方法的参数传递机制/" rel="next" title="Java方法的参数传递机制">
+                <i class="fa fa-chevron-left"></i> Java方法的参数传递机制
               </a>
             
           </div>
@@ -436,10 +428,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/04/29/初始Nginx/" rel="prev" title="初识Nginx">
-                初识Nginx <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -597,7 +585,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是PageHelper"><span class="nav-number">1.</span> <span class="nav-text">什么是PageHelper</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何使用PageHelper"><span class="nav-number">2.</span> <span class="nav-text">如何使用PageHelper</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重要提示"><span class="nav-number">3.</span> <span class="nav-text">重要提示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#相关链接"><span class="nav-number">4.</span> <span class="nav-text">相关链接</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、种类"><span class="nav-number">1.</span> <span class="nav-text">一、种类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、作用域"><span class="nav-number">2.</span> <span class="nav-text">二、作用域</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#感谢阅读本博客。"><span class="nav-number">2.1.</span> <span class="nav-text">感谢阅读本博客。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#欢迎关注我的博客：https-li-weijian-github-io"><span class="nav-number">2.2.</span> <span class="nav-text">欢迎关注我的博客：https://li-weijian.github.io/</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#欢迎关注我的CSDN：https-blog-csdn-net-qq352642663"><span class="nav-number">2.3.</span> <span class="nav-text">欢迎关注我的CSDN：https://blog.csdn.net/qq352642663</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#需要联系请加QQ：352642663"><span class="nav-number">2.4.</span> <span class="nav-text">需要联系请加QQ：352642663</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#欢迎联系我共同交流"><span class="nav-number">2.5.</span> <span class="nav-text">欢迎联系我共同交流</span></a></li></ol></li></ol></div>
             
 
           </div>
