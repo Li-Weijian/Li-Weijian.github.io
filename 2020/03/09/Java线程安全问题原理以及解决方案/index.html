@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="面试,Java,并发编程," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="一、线程存在哪些安全性问题 可见性，原子性，有序性  1.可见性问题出现的原因 带有高速缓存的 CPU 执行计算的流程  程序以及数据被加载到主内存 指令和数据被加载到CPU的高速缓存 CPU执行指令，把结果写到高速缓存 高速缓存中的数据写回主内存   因为存在CPU 高速缓存， 会出现缓存一致性问题，缓存一致性协议 (MESI), 因此会导致可见性问题 M（Modify）     – 修改  E">
+<meta name="keywords" content="面试,Java,并发编程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java线程安全问题原理以及解决方案">
+<meta property="og:url" content="http://yoursite.com/2020/03/09/Java线程安全问题原理以及解决方案/index.html">
+<meta property="og:site_name" content="liweijian&#39;s blog">
+<meta property="og:description" content="一、线程存在哪些安全性问题 可见性，原子性，有序性  1.可见性问题出现的原因 带有高速缓存的 CPU 执行计算的流程  程序以及数据被加载到主内存 指令和数据被加载到CPU的高速缓存 CPU执行指令，把结果写到高速缓存 高速缓存中的数据写回主内存   因为存在CPU 高速缓存， 会出现缓存一致性问题，缓存一致性协议 (MESI), 因此会导致可见性问题 M（Modify）     – 修改  E">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://raw.githubusercontent.com/Li-Weijian/MarkdownPhoto/master/JMM.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Li-Weijian/MarkdownPhoto/master/markword32.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Li-Weijian/MarkdownPhoto/master/偏向锁获得过程.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Li-Weijian/MarkdownPhoto/master/轻量级锁与锁膨胀.png">
+<meta property="og:updated_time" content="2020-03-09T13:35:36.462Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java线程安全问题原理以及解决方案">
+<meta name="twitter:description" content="一、线程存在哪些安全性问题 可见性，原子性，有序性  1.可见性问题出现的原因 带有高速缓存的 CPU 执行计算的流程  程序以及数据被加载到主内存 指令和数据被加载到CPU的高速缓存 CPU执行指令，把结果写到高速缓存 高速缓存中的数据写回主内存   因为存在CPU 高速缓存， 会出现缓存一致性问题，缓存一致性协议 (MESI), 因此会导致可见性问题 M（Modify）     – 修改  E">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Li-Weijian/MarkdownPhoto/master/JMM.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/03/09/Java线程安全问题原理以及解决方案/"/>
+
+
+
+
+
+  <title>Java线程安全问题原理以及解决方案 | liweijian's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liweijian's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">勿在浮沙筑高塔</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/09/Java线程安全问题原理以及解决方案/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="liweijian">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/1519406033201.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liweijian's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java线程安全问题原理以及解决方案</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-09T16:13:44+08:00">
+                2020-03-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="一、线程存在哪些安全性问题"><a href="#一、线程存在哪些安全性问题" class="headerlink" title="一、线程存在哪些安全性问题"></a>一、线程存在哪些安全性问题</h3><ul>
+<li>可见性，原子性，有序性</li>
+</ul>
+<h4 id="1-可见性问题出现的原因"><a href="#1-可见性问题出现的原因" class="headerlink" title="1.可见性问题出现的原因"></a>1.可见性问题出现的原因</h4><ul>
+<li><p><strong>带有高速缓存的 CPU 执行计算的流程</strong></p>
+<ol>
+<li>程序以及数据被加载到主内存</li>
+<li>指令和数据被加载到CPU的高速缓存</li>
+<li>CPU执行指令，把结果写到高速缓存</li>
+<li>高速缓存中的数据写回主内存</li>
+</ol>
+</li>
+<li><p><strong>因为存在CPU 高速缓存， 会出现缓存一致性问题，缓存一致性协议 (MESI), 因此会导致可见性问题</strong></p>
+<p>M（Modify）     – 修改 </p>
+<p>E （Exclusive） –  独享、互斥 </p>
+<p>S（Shared） – 共享的</p>
+<p>I（Invalid）– 无效的 </p>
+</li>
+</ul>
+<h4 id="2-JMM内存模型"><a href="#2-JMM内存模型" class="headerlink" title="2. JMM内存模型"></a>2. JMM内存模型</h4><p>是一种规范。用来解决对线程状态下， 通过共享内存进行通信的时候，存在本地内存数据不一致性的问题</p>
+<p><img src="https://raw.githubusercontent.com/Li-Weijian/MarkdownPhoto/master/JMM.png" alt=""></p>
+<ul>
+<li><p><strong>可见性导致的原子性问题</strong></p>
+<p>在Java线程和工作内存的交互时，有可能导致两个线程同时修改一个变量时导致的问题，这称作变量可见性导致的原子性问题</p>
+</li>
+<li><p><strong>有序性</strong></p>
+<ul>
+<li>编译器的执行重排序</li>
+<li>处理器的指令重排序</li>
+<li>内存系统的重排序</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-JMM-如何解决原子性、可见性、有序性的问题"><a href="#3-JMM-如何解决原子性、可见性、有序性的问题" class="headerlink" title="3. JMM 如何解决原子性、可见性、有序性的问题"></a>3. JMM 如何解决原子性、可见性、有序性的问题</h4><p>​    <code>volatile/ synchronized / final / juc</code></p>
+<ul>
+<li><p>原子性如何解决</p>
+<p>syschronized (monitorenter / monitorexit)</p>
+</li>
+<li><p>可见性如何解决</p>
+<p>volatile、synchronzied、final</p>
+</li>
+<li><p>有序性如何解决</p>
+<p>你volatile 、synchronzied </p>
+</li>
+</ul>
+<h3 id="二、解决线程安全问题"><a href="#二、解决线程安全问题" class="headerlink" title="二、解决线程安全问题"></a>二、解决线程安全问题</h3><h4 id="1-volatile"><a href="#1-volatile" class="headerlink" title="1.  volatile"></a>1.  volatile</h4><ul>
+<li><p>轻量级的所，解决了可见性（<strong>lock缓存锁</strong>）、防止指令重拍排（内存屏障）</p>
+</li>
+<li><p>从CPU层面来了解什么是内存屏障</p>
+<ol>
+<li><p><strong>store barrier (写屏障storestore barrier)</strong></p>
+<p>强制所有在storestore 内存屏障之前的所有指令先执行、发送缓存失效的信号； </p>
+<p>所有在storestore 内存屏障指令之后的store指令，必须在storestore 内存屏障之前的指令执行完再执行</p>
+</li>
+<li><p><strong>load barrirer （读屏障loadload barrier）</strong></p>
+<p>强制所有在loadload 内存屏障之前的所有指令先执行。</p>
+</li>
+<li><p><strong>full barrier （全屏障 storeload barrier）</strong></p>
+<p>当 上一条指令为 store， 下一条指令为load 时，可以插入fullbarrier，防止load 先于store执行导致结果不正确。</p>
+</li>
+</ol>
+</li>
+<li><p>编译器层面如何解决指令重排序的问题</p>
+<ol>
+<li>storestore barrier 写写之间</li>
+<li>loadload barrier  读读之间</li>
+<li>storeload barrier  写读之间</li>
+<li>loadstore barrier  读写之间</li>
+</ol>
+</li>
+</ul>
+<h4 id="2-synchronized"><a href="#2-synchronized" class="headerlink" title="2. synchronized"></a>2. synchronized</h4><ul>
+<li><p>可以保证 原子性、可见性、有序性</p>
+</li>
+<li><p><strong>synchronized 怎么实现锁</strong></p>
+<ol>
+<li>添加一个 访问标志位： ACC_SYNCHRONIZED</li>
+<li>在 <code>synchronized</code>  包括的代码块 的前后 在字节码层面添加 <strong>monitorenter</strong> 和 <strong>monitorexit</strong></li>
+</ol>
+</li>
+<li><p><strong>为什么任何一个对象都可以成为锁</strong></p>
+<ol>
+<li><p>普通对象</p>
+<ul>
+<li>对象头（markword）：存储锁的信息，GC信息，比如使用synchronized 对这个对象加锁，占用 8个字节<img src="https://raw.githubusercontent.com/Li-Weijian/MarkdownPhoto/master/markword32.png" alt=""></li>
+<li>类型指针（class pointer）： 指向哪个类， 开启压缩后4个字节，否则8个字节</li>
+<li>实例数据（instance data）：成员变量</li>
+<li>对齐（padding） 将字节补齐到能被8整除</li>
+</ul>
+</li>
+<li><p>锁的升级过程: 线程竞争加剧，才会出现锁升级过程</p>
+<ol>
+<li><p>偏向锁</p>
+<p>在大多数情况下，锁不仅不存在竞争，并且大多数情况下会由同一个线程获得， 因此，可以引入偏向锁。</p>
+<p>偏向锁，指的就是，把markword的线程ID改为自己线程ID的过程，下次再需要访问时直接访问不需要重新获取锁。<br>偏向锁不可重偏向 批量偏向 批量撤销</p>
+<p><img src="https://raw.githubusercontent.com/Li-Weijian/MarkdownPhoto/master/偏向锁获得过程.png" alt=""></p>
+</li>
+<li><p>轻量级锁（自旋锁， 自适应自旋锁）</p>
+<p>如果有线程竞争，撤销偏向锁，升级轻量级锁<br>线程在自己的线程栈生成LockRecord ，用CAS操作将markword设置为指向自己这个线程的LR的指针，设置成功者得到锁</p>
+<p><img src="https://raw.githubusercontent.com/Li-Weijian/MarkdownPhoto/master/轻量级锁与锁膨胀.png" alt=""></p>
+</li>
+<li><p>重量级锁</p>
+<p>竞争加剧：有线程超过10次自旋， -XX:PreBlockSpin， 或者自旋线程数超过CPU核数的一半， 1.6之后，加入自适应自旋 Adapative Self Spinning ， JVM自己控制<br>升级重量级锁：-&gt; 向操作系统申请资源，linux mutex , CPU从3级-0级系统调用，线程挂起，进入等待队列，等待操作系统的调度，然后再映射回用户空间</p>
+</li>
+<li><p>注意：JDK8 默认的对象头是无锁，JDK11默认是偏向锁</p>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p><strong>synchronized的可重入怎么实现</strong></p>
+<p>每个锁关联一个线程持有者和一个计数器。当计数器为0时表示该锁没有被任何线程持有，那么任何线程都可能获得该锁而调用相应方法。当一个线程请求成功后，JVM会记下持有锁的线程，并将计数器计为1。此时其他线程请求该锁，则必须等待。而该持有锁的线程如果再次请求这个锁，就可以再次拿到这个锁，同时计数器会递增。当线程退出一个synchronized方法/块时，计数器会递减，如果计数器为0则释放该锁。 </p>
+</li>
+</ul>
+<h3 id="三、面试总结"><a href="#三、面试总结" class="headerlink" title="三、面试总结"></a>三、面试总结</h3><h5 id="1-说说volatile"><a href="#1-说说volatile" class="headerlink" title="1. 说说volatile"></a>1. 说说volatile</h5><ul>
+<li>保证线程可见性，防止指令重排序</li>
+<li>在字节码层面使用 #lock 指令（缓存锁）实现缓存一致性（MESI）</li>
+<li>使用内存屏障防止指令重排序（操作系统层面：3种， 编译器层面4种）</li>
+<li>使用场景<ul>
+<li>通过标志变量 关闭线程</li>
+<li>JUC中大量使用了volatile</li>
+</ul>
+</li>
+</ul>
+<h5 id="2-wait-或者-notify-为什么要先获取锁"><a href="#2-wait-或者-notify-为什么要先获取锁" class="headerlink" title="2. wait 或者 notify 为什么要先获取锁"></a>2. wait 或者 notify 为什么要先获取锁</h5><ul>
+<li>当调用wait() 方法时，会将线程 放入 WaitSet 等待队列中，并调用park() 方法，并释放锁。</li>
+<li>当调用notify() 方法时， 同样会将线程 从 WaitSet 等待队列取出中，但并不会释放锁， 必须要等 notify() 所在线程执行完 synchronized（obj）块中的所有代码才会释放这把锁。 </li>
+<li><code>yield()</code>, <code>sleep()</code>不会释放锁。 </li>
+</ul>
+<h5 id="3-Java-中-sleep-和-wait-的区别"><a href="#3-Java-中-sleep-和-wait-的区别" class="headerlink" title="3. Java 中 sleep() 和 wait() 的区别"></a>3. Java 中 sleep() 和 wait() 的区别</h5><ul>
+<li>这两个方法来自不同的类分别是 Thread 和 Object </li>
+<li>最主要是 sleep 方法没有释放锁，而 wait 方法释放了锁，使得其他线程可以使用同步控制块或者方法(锁代码块和方法锁)。</li>
+<li>wait，notify 和 notifyAll 只能在同步控制方法或者同步控制块里面使用，而 sleep 可以在任何地方使用(使用范围) </li>
+<li>sleep 必须捕获异常，而wait，notify 和 notifyAll 不需要捕获异常 </li>
+</ul>
+<h5 id="4-Java-synchronized-关键字相关的一道题目解析"><a href="#4-Java-synchronized-关键字相关的一道题目解析" class="headerlink" title="4. Java synchronized 关键字相关的一道题目解析"></a>4. Java synchronized 关键字相关的一道题目解析</h5><p> <a href="https://mp.weixin.qq.com/s?__biz=MzI3ODc3NzQ4NQ==&amp;mid=2247484310&amp;idx=1&amp;sn=c7d31e0eefb45e7668530b92cd391487&amp;chksm=eb509874dc2711627433d34819a08df6c46e4dcac7ac4781490103cba37a17b47ed96f9ad5b4&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzI3ODc3NzQ4NQ==&amp;mid=2247484310&amp;idx=1&amp;sn=c7d31e0eefb45e7668530b92cd391487&amp;chksm=eb509874dc2711627433d34819a08df6c46e4dcac7ac4781490103cba37a17b47ed96f9ad5b4&amp;scene=21#wechat_redirect</a> </p>
+<hr>
+<p>####感谢阅读本博客。</p>
+<p>####欢迎关注我的博客：<a href="https://li-weijian.github.io/" target="_blank" rel="noopener">https://li-weijian.github.io/</a></p>
+<p>####欢迎关注我的CSDN：<a href="https://blog.csdn.net/qq352642663" target="_blank" rel="noopener">https://blog.csdn.net/qq352642663</a></p>
+<p>####需要联系请加QQ：352642663</p>
+<p>####欢迎联系我共同交流</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/面试/" rel="tag"># 面试</a>
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+            <a href="/tags/并发编程/" rel="tag"># 并发编程</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/06/Linux常用服务类相关命令/" rel="next" title="Linux常用服务类相关命令">
+                <i class="fa fa-chevron-left"></i> Linux常用服务类相关命令
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/1519406033201.png"
+                alt="liweijian" />
+            
+              <p class="site-author-name" itemprop="name">liweijian</p>
+              <p class="site-description motion-element" itemprop="description">勿在浮沙筑高塔</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Li-Weijian" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/5116599362/profile?rightmod=1&wvr=6&mod=personinfo" target="_blank" title="Weibo">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Weibo</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/li-wei-jian-6-83/activities" target="_blank" title="ZhiHu">
+                      
+                        <i class="fa fa-fw fa-globe"></i>ZhiHu</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、线程存在哪些安全性问题"><span class="nav-number">1.</span> <span class="nav-text">一、线程存在哪些安全性问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-可见性问题出现的原因"><span class="nav-number">1.1.</span> <span class="nav-text">1.可见性问题出现的原因</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-JMM内存模型"><span class="nav-number">1.2.</span> <span class="nav-text">2. JMM内存模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-JMM-如何解决原子性、可见性、有序性的问题"><span class="nav-number">1.3.</span> <span class="nav-text">3. JMM 如何解决原子性、可见性、有序性的问题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、解决线程安全问题"><span class="nav-number">2.</span> <span class="nav-text">二、解决线程安全问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-volatile"><span class="nav-number">2.1.</span> <span class="nav-text">1.  volatile</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-synchronized"><span class="nav-number">2.2.</span> <span class="nav-text">2. synchronized</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、面试总结"><span class="nav-number">3.</span> <span class="nav-text">三、面试总结</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-说说volatile"><span class="nav-number">3.0.1.</span> <span class="nav-text">1. 说说volatile</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-wait-或者-notify-为什么要先获取锁"><span class="nav-number">3.0.2.</span> <span class="nav-text">2. wait 或者 notify 为什么要先获取锁</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-Java-中-sleep-和-wait-的区别"><span class="nav-number">3.0.3.</span> <span class="nav-text">3. Java 中 sleep() 和 wait() 的区别</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-Java-synchronized-关键字相关的一道题目解析"><span class="nav-number">3.0.4.</span> <span class="nav-text">4. Java synchronized 关键字相关的一道题目解析</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liweijian</span>
+
+  
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_pv">
+  本站访客数:<span id="busuanzi_value_site_pv"></span>
+</span>
+</div>
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
